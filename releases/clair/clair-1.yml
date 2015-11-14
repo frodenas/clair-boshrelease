@@ -1,0 +1,42 @@
+---
+packages:
+- name: bosh-helpers
+  version: f469b9d9cd643a3e706ca661deea572de6e522b4
+  fingerprint: f469b9d9cd643a3e706ca661deea572de6e522b4
+  sha1: a9ce030b3ec481a2197dca9814cc612550045b9b
+  dependencies: []
+- name: bzr
+  version: 6013f9897f9ba602f5af2acf85210ef16e6eadee
+  fingerprint: 6013f9897f9ba602f5af2acf85210ef16e6eadee
+  sha1: b013056a7e23e0549d0c06d80e258bdde21fed36
+  dependencies:
+  - python
+- name: clair
+  version: 95d5a4e73ec4da47dce3d896d5bd9751bd004ff4
+  fingerprint: 95d5a4e73ec4da47dce3d896d5bd9751bd004ff4
+  sha1: 0af1555745055d5618e3b3e1508f93b0c0debb1c
+  dependencies:
+  - golang
+- name: golang
+  version: 5519bcd760fbf15e8c2a0562da4cf2e00d846df9
+  fingerprint: 5519bcd760fbf15e8c2a0562da4cf2e00d846df9
+  sha1: 0a95b3b150120a086a2cc813774952114f889a5b
+  dependencies: []
+- name: python
+  version: 438b38336f65af257e880a7bb6dd658e5f2953aa
+  fingerprint: 438b38336f65af257e880a7bb6dd658e5f2953aa
+  sha1: 9fc4c8d31a44c7474dbdbbd93079e4bf4e6d2b04
+  dependencies: []
+jobs:
+- name: clair
+  version: 88e02dfc8346cb72df69ca0c088d523fe2f7cebf
+  fingerprint: 88e02dfc8346cb72df69ca0c088d523fe2f7cebf
+  sha1: b4d4cbfcf7e648e19e86c0facbb83ef580bec9d7
+license:
+  version: 177c113663fe9b8f50aa800f1858f3c1a59f635a
+  fingerprint: 177c113663fe9b8f50aa800f1858f3c1a59f635a
+  sha1: b3b79e573b22045258dd6e2bf106fbde177a2040
+commit_hash: 2aa2c63a
+uncommitted_changes: true
+name: clair
+version: '1'
