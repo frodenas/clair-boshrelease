@@ -1,0 +1,48 @@
+---
+name: clair
+
+packages:
+  - bosh-helpers
+  - bzr
+  - clair
+  - python
+
+templates:
+  bin/clair_ctl.erb: bin/clair_ctl
+  bin/job_properties.sh.erb: bin/job_properties.sh
+  config/clair.cacert.erb: config/clair.cacert
+  config/clair.cert.erb: config/clair.cert
+  config/clair.key.erb: config/clair.key
+
+properties:
+  clair.log_level:
+    description: "Clair Log Level (trace, debug, info, notice, warning, error, critical)"
+    default: "info"
+  clair.db_type:
+    description: "Type of the database to use"
+    default: "bolt"
+  clair.db_path:
+    description: "Path to the database to use"
+  clair.notifier_type:
+    description: "Type of the notifier to use"
+    default: "none"
+  clair.notifier_http_url:
+    description: "URL that will receive POST notifications"
+  clair.update_interval:
+    description: "Frequency at which the vulnerability updater will run. Use 0 to disable the updater entirely."
+    default: "1h"
+  clair.api_port:
+    description: "Port on which the API will listen"
+    default: 6060
+  clair.api_timeout:
+    description: "Timeout of API calls"
+    default: "900s"
+  clair.tls_cacert:
+    description: "CA for verifying TLS client certs"
+  clair.tls_cert:
+    description: "TLS Cert file"
+  clair.tls_key:
+    description: "TLS Key file"
+  clair.enable_cpu_profiling:
+    description: "Enable CPU Profiling"
+    default: false

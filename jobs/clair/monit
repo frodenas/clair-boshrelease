@@ -1,0 +1,5 @@
+check process clair
+  with pidfile /var/vcap/sys/run/clair/clair.pid
+  start program "/var/vcap/packages/bosh-helpers/monit_debugger clair_ctl '/var/vcap/jobs/clair/bin/clair_ctl start'"
+  stop program "/var/vcap/packages/bosh-helpers/monit_debugger clair_ctl '/var/vcap/jobs/clair/bin/clair_ctl stop'"
+  group vcap

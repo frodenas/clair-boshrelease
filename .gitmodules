@@ -1,0 +1,3 @@
+[submodule "src/github.com/coreos/clair"]
+	path = src/github.com/coreos/clair
+	url = https://github.com/coreos/clair.git

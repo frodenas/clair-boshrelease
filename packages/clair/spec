@@ -1,0 +1,6 @@
+---
+name: clair
+dependencies:
+  - golang
+files:
+  - github.com/coreos/clair/**/*

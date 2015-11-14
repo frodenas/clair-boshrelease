@@ -1,0 +1,23 @@
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+# Detect # of CPUs so make jobs can be parallelized
+CPUS=`grep -c ^processor /proc/cpuinfo`
+
+# We grab the latest versions that are in the directory
+PYTHON_VERSION=`ls -r python/Python-*.tgz | sed 's/python\/Python-\(.*\)\.tgz/\1/' | head -1`
+
+# Extract Python package
+echo "Extracting Python ${PYTHON_VERSION}..."
+tar xzvf ${BOSH_COMPILE_TARGET}/python/Python-${PYTHON_VERSION}.tgz
+if [[ $? != 0 ]] ; then
+  echo "Failed extracting Python ${PYTHON_VERSION}"
+  exit 1
+fi
+
+# Building Python package
+echo "Building Python ${PYTHON_VERSION}..."
+cd ${BOSH_COMPILE_TARGET}/Python-${PYTHON_VERSION}
+./configure --prefix=${BOSH_INSTALL_TARGET}
+make -j${CPUS}
+make install
