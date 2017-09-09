@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -eux
+
+# Install python package
+tar xzvf ${BOSH_COMPILE_TARGET}/python/Python-2.7.13.tgz
+pushd Python-2.7.13
+./configure --prefix=${BOSH_INSTALL_TARGET}
+make
+make install
+popd

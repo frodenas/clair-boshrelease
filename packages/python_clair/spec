@@ -1,0 +1,5 @@
+---
+name: python_clair
+
+files:
+  - python/Python-2.7.13.tgz
