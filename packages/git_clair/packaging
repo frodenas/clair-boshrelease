@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -eux
+
+# Install git package
+tar xzvf ${BOSH_COMPILE_TARGET}/git/git-2.14.1.tar.gz
+pushd git-2.14.1
+./configure --prefix=${BOSH_INSTALL_TARGET}
+make
+make install
+popd
