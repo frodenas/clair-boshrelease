@@ -12,8 +12,8 @@ PIDFILE=${RUN_DIR}/clair.pid
 
 source /var/vcap/packages/clair/common/utils.sh
 
-export PATH=/var/vcap/packages/clair/bin:/var/vcap/packages/python/bin:/var/vcap/packages/bzr/bin:${PATH}
-export PYTHONPATH=/var/vcap/packages/python:/var/vcap/packages/bzr/lib/python:$PYTHONPATH
+export PATH=/var/vcap/packages/clair/bin:/var/vcap/packages/python_clair/bin:/var/vcap/packages/bzr_clair/bin:${PATH}
+export PYTHONPATH=/var/vcap/packages/python_clair:/var/vcap/packages/bzr_clair/lib/python:$PYTHONPATH
 
 case $1 in
   start)

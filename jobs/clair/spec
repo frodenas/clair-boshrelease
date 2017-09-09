@@ -2,9 +2,9 @@
 name: clair
 
 packages:
-  - bzr
   - clair
-  - python
+  - bzr_clair
+  - python_clair
 
 templates:
   bin/clair_ctl.erb: bin/clair_ctl
