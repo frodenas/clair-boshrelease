@@ -1,0 +1,8 @@
+---
+name: bzr_clair
+
+dependencies:
+  - python_clair
+
+files:
+  - bzr/bzr-2.7.0.tar.gz

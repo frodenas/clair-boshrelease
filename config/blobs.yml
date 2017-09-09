@@ -1,7 +1,7 @@
-bzr/bzr-2.6.0.tar.gz:
-  size: 11301124
-  object_id: 94bbe943-c887-420b-b738-496e06a16d43
-  sha: 5eb4d0367c6d83396250165da5bb2c8a9f378293
+bzr/bzr-2.7.0.tar.gz:
+  size: 11526191
+  object_id: acaa8ca1-bd32-4464-56e9-3927a93d43f0
+  sha: 75745f9ba7c84ed58fd24cee5b3a1d9870c8d3eb
 golang/go1.9.linux-amd64.tar.gz:
   size: 102601309
   object_id: 8c505899-b810-46ac-4edb-e3f88d7377b2

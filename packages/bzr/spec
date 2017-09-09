@@ -1,6 +1,0 @@
----
-name: bzr
-dependencies:
-  - python
-files:
-  - bzr/bzr-2.6.0.tar.gz

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -eux
+
+export PATH=/var/vcap/packages/python/bin:$PATH
+
+# Install bzr package
+tar xzvf ${BOSH_COMPILE_TARGET}/bzr/bzr-2.7.0.tar.gz
+pushd bzr-2.7.0
+python setup.py install --home ${BOSH_INSTALL_TARGET} build_ext --allow-python-fallback
+popd
