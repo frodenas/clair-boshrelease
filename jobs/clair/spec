@@ -4,6 +4,7 @@ name: clair
 packages:
   - clair
   - bzr_clair
+  - git_clair
   - python_clair
 
 templates:
