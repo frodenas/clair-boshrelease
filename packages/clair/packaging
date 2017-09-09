@@ -1,18 +1,20 @@
-set -e # exit immediately if a simple command exits with a non-zero status
-set -u # report the usage of uninitialized variables
+#!/bin/bash
 
-# Set Golang dependency
-export GOROOT=$(readlink -nf /var/vcap/packages/golang)
+set -eux
+
+# Copy common utils
+mkdir -p ${BOSH_INSTALL_TARGET}/common
+cp -a ${BOSH_COMPILE_TARGET}/common/* ${BOSH_INSTALL_TARGET}/common
+
+# Build clair package
+export GOROOT=/var/vcap/packages/golang_clair/go
 export PATH=${GOROOT}/bin:${PATH}
-export GO15VENDOREXPERIMENT=1
 
-# Build Clair package
-echo "Building Clair..."
 PACKAGE_NAME=github.com/coreos/clair
 mkdir -p ${BOSH_INSTALL_TARGET}/src/${PACKAGE_NAME}
 cp -a ${BOSH_COMPILE_TARGET}/${PACKAGE_NAME}/* ${BOSH_INSTALL_TARGET}/src/${PACKAGE_NAME}
 export GOPATH=${BOSH_INSTALL_TARGET}
-go install ${PACKAGE_NAME}
 
-# Clean up pkg & src artifacts
+go install ${PACKAGE_NAME}/cmd/clair
+
 rm -rf ${BOSH_INSTALL_TARGET}/pkg ${BOSH_INSTALL_TARGET}/src
