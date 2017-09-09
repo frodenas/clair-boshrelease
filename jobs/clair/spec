@@ -2,47 +2,33 @@
 name: clair
 
 packages:
-  - bosh-helpers
   - bzr
   - clair
   - python
 
 templates:
   bin/clair_ctl.erb: bin/clair_ctl
-  bin/job_properties.sh.erb: bin/job_properties.sh
-  config/clair.cacert.erb: config/clair.cacert
-  config/clair.cert.erb: config/clair.cert
-  config/clair.key.erb: config/clair.key
+  config/clair_tls_ca.pem: config/clair_tls_ca.pem
+  config/clair_tls_cert.pem: config/clair_tls_cert.pem
+  config/clair_tls_key.pem: config/clair_tls_key.pem
+  config/clair.yaml: config/clair.yaml
 
 properties:
   clair.log_level:
-    description: "Clair Log Level (trace, debug, info, notice, warning, error, critical)"
+    description: "Define the logging level (debug, info, warn, error, fatal, panic)"
     default: "info"
-  clair.db_type:
-    description: "Type of the database to use"
-    default: "bolt"
-  clair.db_path:
-    description: "Path to the database to use"
-  clair.notifier_type:
-    description: "Type of the notifier to use"
-    default: "none"
-  clair.notifier_http_url:
-    description: "URL that will receive POST notifications"
-  clair.update_interval:
-    description: "Frequency at which the vulnerability updater will run. Use 0 to disable the updater entirely."
-    default: "1h"
-  clair.api_port:
-    description: "Port on which the API will listen"
-    default: 6060
-  clair.api_timeout:
-    description: "Timeout of API calls"
-    default: "900s"
-  clair.tls_cacert:
-    description: "CA for verifying TLS client certs"
+  clair.insecure_tls:
+    description: "Disable TLS server's certificate chain and hostname verification when pulling layers"
+  clair.tls_ca:
+    description: "TLS CA certificate (PEM format)"
   clair.tls_cert:
-    description: "TLS Cert file"
+    description: "TLS certificate (PEM format)"
   clair.tls_key:
-    description: "TLS Key file"
-  clair.enable_cpu_profiling:
-    description: "Enable CPU Profiling"
-    default: false
+    description: "TLS private jey (PEM format)"
+
+  env.http_proxy:
+    description: "HTTP proxy to use"
+  env.https_proxy:
+    description: "HTTPS proxy to use"
+  env.no_proxy:
+    description: "List of comma-separated hosts that should skip connecting to the proxy"

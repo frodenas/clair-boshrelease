@@ -1,42 +1,50 @@
 #!/bin/bash
 
-set -e # exit immediately if a simple command exits with a non-zero status
+set -eu
 
-# Setup common env vars and folders
-source /var/vcap/packages/bosh-helpers/ctl_setup.sh 'clair'
-export CLAIR_PID_FILE=${CLAIR_PID_DIR}/clair.pid
+RUN_DIR=/var/vcap/sys/run/clair
+LOG_DIR=/var/vcap/sys/log/clair
+TMP_DIR=/var/vcap/sys/tmp/clair
+STORE_DIR=/var/vcap/store/clair
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
 
-# Set Python & Bazaar path
-export PATH=/var/vcap/packages/python/bin:/var/vcap/packages/bzr/bin:$PATH
+PIDFILE=${RUN_DIR}/clair.pid
+
+source /var/vcap/packages/clair/common/utils.sh
+
+export PATH=/var/vcap/packages/clair/bin:/var/vcap/packages/python/bin:/var/vcap/packages/bzr/bin:${PATH}
 export PYTHONPATH=/var/vcap/packages/python:/var/vcap/packages/bzr/lib/python:$PYTHONPATH
 
 case $1 in
-
   start)
-    pid_guard ${CLAIR_PID_FILE} ${JOB_NAME}
-    echo $$ > ${CLAIR_PID_FILE}
+    pid_guard ${PIDFILE} "clair"
+    echo $$ > ${PIDFILE}
 
-    # Start Clair service
-    exec /var/vcap/packages/clair/bin/clair \
-      --log-level=${CLAIR_LOG_LEVEL} \
-      --db-type=${CLAIR_DB_TYPE} \
-      --db-path=${CLAIR_DB_PATH} \
-      --notifier-type=${CLAIR_NOTIFIER_TYPE} \
-      --notifier-http-url=${CLAIR_NOTIFIER_HTTP_URL} \
-      --update-interval=${CLAIR_UPDATE_INTERVAL} \
-      --api-port=${CLAIR_API_PORT} \
-      --api-timeout=${CLAIR_API_TIMEOUT} \
-      ${CLAIR_API_CA_FILE:-} \
-      ${CLAIR_API_CERT_FILE:-} \
-      ${CLAIR_API_KEY_FILE:-} \
-      ${CLAIR_CPU_PROFILE_PATH:-} \
-      >>${CLAIR_LOG_DIR}/${OUTPUT_LABEL}.stdout.log \
-      2>>${CLAIR_LOG_DIR}/${OUTPUT_LABEL}.stderr.log
+    <% if_p('env.http_proxy') do |http_proxy| %>
+    export HTTP_PROXY="<%= http_proxy %>"
+    export http_proxy="<%= http_proxy %>"
+    <% end %>
+    <% if_p('env.https_proxy') do |https_proxy| %>
+    export HTTPS_PROXY="<%= https_proxy %>"
+    export https_proxy="<%= https_proxy %>"
+    <% end %>
+    <% if_p('env.no_proxy') do |no_proxy| %>
+    export NO_PROXY="<%= no_proxy %>"
+    export no_proxy="<%= no_proxy %>"
+    <% end %>
+
+    exec clair \
+      -config="/var/vcap/jobs/clair/config/clair.yaml" \
+      -log-level="<%= p('clair.log_level') %>" \
+      <% if_p('clair.insecure_tls') do %> \
+      -insecure-tls \
+      <% end %> \
+      >>  ${LOG_DIR}/clair.stdout.log \
+      2>> ${LOG_DIR}/clair.stderr.log
     ;;
 
   stop)
-    # Stop Clair service
-    kill_and_wait ${CLAIR_PID_FILE}
+    kill_and_wait ${PIDFILE}
     ;;
 
   *)
@@ -45,4 +53,5 @@ case $1 in
     ;;
 
 esac
+
 exit 0
