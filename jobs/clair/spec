@@ -13,6 +13,20 @@ templates:
   config/clair_tls_cert.pem: config/clair_tls_cert.pem
   config/clair_tls_key.pem: config/clair_tls_key.pem
   config/clair.yaml: config/clair.yaml
+  config/webhook_tls_ca.pem: config/webhook_tls_ca.pem
+  config/webhook_tls_cert.pem: config/webhook_tls_cert.pem
+  config/webhook_tls_key.pem: config/webhook_tls_key.pem
+
+provides:
+  - name: clair
+    type: clair
+    properties:
+      - clair.api.port
+
+consumes:
+  - name: database
+    type: database
+    optional: true
 
 properties:
   clair.log_level:
@@ -20,12 +34,66 @@ properties:
     default: "info"
   clair.insecure_tls:
     description: "Disable TLS server's certificate chain and hostname verification when pulling layers"
-  clair.tls_ca:
-    description: "TLS CA certificate (PEM format)"
-  clair.tls_cert:
-    description: "TLS certificate (PEM format)"
-  clair.tls_key:
-    description: "TLS private jey (PEM format)"
+
+  clair.database.type:
+    description: "Database driver (pgsql)"
+  clair.database.host:
+    description: "Database host"
+  clair.database.port:
+    description: "Database port"
+  clair.database.user:
+    description: "Database username"
+  clair.database.password:
+    description: "Database password"
+  clair.database.name:
+    description: "Database name"
+  clair.database.cachesize:
+    description: "Number of elements kept in the cache (only for pgsql)"
+  clair.database.pagination_key:
+    description: "32-bit URL-safe base64 key used to encrypt pagination tokens (only for pgsql)"
+
+  clair.updater.interval:
+    description: "Frequency the database will be updated with vulnerabilities from the default data sources (the value 0 disables the updater entirely)"
+  clair.updater.enabled_updaters:
+    description: "List of enabled updaters (alpine, debian, oracle, rhel, ubuntu)"
+
+  clair.worker.namespace_detectors:
+    description: "List of feature namespace detectors (alpine-release, apt-sources, lsb-release, os-release, redhat-release)"
+  clair.worker.feature_listers:
+    description: "List of feature listers (apk, dpkg, rpm)"
+
+  clair.notifier.attempts:
+    description: "Number of attempts before the notification is marked as failed to be sent"
+  clair.notifier.renotify_interval:
+    description: "Duration before a failed notification is retried"
+
+  clair.notifier.webhook.endpoint:
+    description: "Endpoint that will receive notifications via POST requests"
+  clair.notifier.webhook.servername:
+    description: "Webhook notifier TLS servername"
+  clair.notifier.webhook.tls_ca:
+    description: "Webhook notifier TLS CA certificate (PEM format)"
+  clair.notifier.webhook.tls_cert:
+    description: "Webhook notifier TLS certificate (PEM format)"
+  clair.notifier.webhook.tls_key:
+    description: "Webhook notifier TLS private jey (PEM format)"
+  clair.notifier.webhook.proxy:
+    description: "HTTP Proxy (must be a valid URL, including the scheme)"
+
+  clair.api.port:
+    description: "v3 grpc/RESTful API server port"
+    default: 6060
+  clair.api.health_port:
+    description: "Health server port"
+    default: 6061
+  clair.api.timeout:
+    description: "Deadline before an API request will respond with a 503"
+  clair.api.tls_ca:
+    description: "v3 grpc/RESTful API server TLS CA certificate (PEM format)"
+  clair.api.tls_cert:
+    description: "v3 grpc/RESTful API server TLS certificate (PEM format)"
+  clair.api.tls_key:
+    description: "v3 grpc/RESTful API server TLS private jey (PEM format)"
 
   env.http_proxy:
     description: "HTTP proxy to use"

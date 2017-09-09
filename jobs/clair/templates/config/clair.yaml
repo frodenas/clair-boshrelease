@@ -1,0 +1,88 @@
+clair:
+  database:
+    type: <%= p('clair.database.type') %>
+
+    options:
+      <% if p('clair.database.type') == "pgsql" %>
+      <%
+        database_host = nil
+        if_p('clair.database.host') do |host|
+          database_host = host
+        end.else do
+          database_host = link('database').instances.first.address
+        end
+      %>
+      source: host=<%= database_host %> port=<%= p('clair.database.port') %> user=<%= p('clair.database.user') %> password=<%= p('clair.database.password') %> dbname=<%= p('clair.database.name') %> sslmode=disable
+
+      <% if_p('clair.database.cachesize') do |cachesize| %>
+      cachesize: <%= cachesize %>
+      <% end %>
+
+      <% if_p('clair.database.pagination_key') do |pagination_key| %>
+      paginationkey: <%= pagination_key %>
+      <% end %>
+
+      <% else raise "Database type #{p('clair.database.type')} not supported" %>
+      <% end %>
+
+  updater:
+    <% if_p('clair.updater.interval') do |interval| %>
+    interval: <%= interval %>
+    <% end %>
+
+    <% if_p('clair.updater.enabled_updaters') do |enabled_updaters| %>
+    enabledupdaters: <%= enabled_updaters %>
+    <% end %>
+
+  worker:
+    <% if_p('clair.worker.namespace_detectors') do |namespace_detectors| %>
+    namespace_detectors: <%= namespace_detectors %>
+    <% end %>
+
+    <% if_p('clair.worker.feature_listers') do |feature_listers| %>
+    feature_listers: <%= feature_listers %>
+    <% end %>
+
+  notifier:
+    <% if_p('clair.notifier.attempts') do |attempts| %>
+    attempts: <%= attempts %>
+    <% end %>
+
+    <% if_p('clair.notifier.renotify_interval') do |renotify_interval| %>
+    renotifyinterval: <%= renotify_interval %>
+    <% end %>
+
+    http:
+      <% if_p('clair.notifier.webhook.endpoint') do |endpoint| %>
+      endpoint: <%= endpoint %>
+      <% end %>
+
+      <% if_p('clair.notifier.webhook.servername') do |servername| %>
+      servername: <%= servername %>
+      <% end %>
+
+      <% if_p('clair.notifier.webhook.tls_cert', 'clair.notifier.webhook.tls_key') do %>
+      <% if_p('clair.notifier.webhook.tls_ca') do %>
+      cafile: /var/vcap/jobs/clair/config/webhook_tls_ca.pem
+      <% end %>
+      certfile: /var/vcap/jobs/clair/config/webhook_tls_cert.pem
+      keyfile: /var/vcap/jobs/clair/config/webhook_tls_key.pem
+      <% end %>
+
+      <% if_p('clair.notifier.webhook.proxy') do |proxy| %>
+      proxy: <%= proxy %>
+      <% end %>
+
+  api:
+    addr: "0.0.0.0:<%= p('clair.api.port') %>"
+    healthaddr: "0.0.0.0:<%= p('clair.api.health_port') %>"
+
+    <% if_p('clair.api.timeout') do |timeout| %>
+    timeout: <%= timeout %>
+    <% end %>
+
+    <% if_p('clair.api.tls_ca', 'clair.api.tls_cert', 'clair.api.tls_key') do %>
+    cafile: /var/vcap/jobs/clair/config/clair_tls_ca.pem
+    certfile: /var/vcap/jobs/clair/config/clair_tls_cert.pem
+    keyfile: /var/vcap/jobs/clair/config/clair_tls_key.pem
+    <% end %>
