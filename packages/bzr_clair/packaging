@@ -2,7 +2,7 @@
 
 set -eux
 
-export PATH=/var/vcap/packages/python/bin:$PATH
+export PATH=/var/vcap/packages/python_clair/bin:$PATH
 
 # Install bzr package
 tar xzvf ${BOSH_COMPILE_TARGET}/bzr/bzr-2.7.0.tar.gz
