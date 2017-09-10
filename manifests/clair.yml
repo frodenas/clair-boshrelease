@@ -1,0 +1,77 @@
+---
+name: clair
+
+instance_groups:
+  - name: clair
+    azs:
+      - z1
+    instances: 1
+    vm_type: default
+    stemcell: default
+    persistent_disk_type: 10GB
+    networks:
+      - name: default
+    jobs:
+      - name: postgres
+        release: postgres
+        properties:
+          databases:
+            port: 5432
+            databases:
+              - name: clair
+                citext: true
+            roles:
+              - name: clair
+                password: ((postgres_clair_password))
+      - name: clair
+        release: clair
+        properties:
+          clair:
+            database:
+              type: pgsql
+              port: 5432
+              user: clair
+              password: ((postgres_clair_password))
+              name: clair
+            updater:
+              enabled_updaters:
+                - alpine
+                - debian
+                - oracle
+                - rhel
+                - ubuntu
+            worker:
+              namespace_detectors:
+                - alpine-release
+                - apt-sources
+                - lsb-release
+                - os-release
+                - redhat-release
+              feature_listers:
+                - apk
+                - dpkg
+                - rpm
+
+variables:
+  - name: postgres_clair_password
+    type: password
+
+update:
+  canaries: 1
+  max_in_flight: 32
+  canary_watch_time: 1000-100000
+  update_watch_time: 1000-100000
+  serial: false
+
+stemcells:
+  - alias: default
+    os: ubuntu-trusty
+    version: latest
+
+releases:
+- name: postgres
+  version: "20"
+  url: https://bosh.io/d/github.com/cloudfoundry/postgres-release?v=20
+  sha1: 3f378bcab294e20316171d4e656636df88763664
+- name: clair
+  version: latest
