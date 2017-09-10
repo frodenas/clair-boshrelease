@@ -1,0 +1,10 @@
+---
+name: rpm_clair
+
+files:
+  - rpm/db-4.5.20.tar.gz
+  - rpm/file-5.32.tar.gz
+  - rpm/libarchive-3.3.2.tar.gz
+  - rpm/nss-3.32-with-nspr-4.16.tar.gz
+  - rpm/popt-1.16.tar.gz
+  - rpm/rpm-4.13.0.1.tar.bz2

@@ -1,0 +1,53 @@
+#!/bin/bash
+
+set -eux
+
+# Install db package
+tar xzvf ${BOSH_COMPILE_TARGET}/rpm/db-4.5.20.tar.gz
+pushd db-4.5.20/build_unix
+../dist/configure --with-posixmutexes --prefix=${BOSH_INSTALL_TARGET}
+make
+make install
+popd
+
+# Install file package
+tar xzvf ${BOSH_COMPILE_TARGET}/rpm/file-5.32.tar.gz
+pushd file-5.32
+./configure --prefix=${BOSH_INSTALL_TARGET}
+make
+make install
+popd
+
+# Install libarchive package
+tar xzvf ${BOSH_COMPILE_TARGET}/rpm/libarchive-3.3.2.tar.gz
+pushd libarchive-3.3.2
+./configure --prefix=${BOSH_INSTALL_TARGET}
+make
+make install
+popd
+
+# Install nss package
+tar xzvf ${BOSH_COMPILE_TARGET}/rpm/nss-3.32-with-nspr-4.16.tar.gz
+pushd nss-3.32/nss
+BUILD_OPT=1 USE_64=1 USEABSPATH=YES NSPR_CONFIGURE_OPTS="--enable-64bit" make nss_build_all
+popd
+nssdir="$(pwd)/nss-3.32"
+nssdist=$(cat ${nssdir}/dist/latest)
+
+# Install popt package
+tar xzvf ${BOSH_COMPILE_TARGET}/rpm/popt-1.16.tar.gz
+pushd popt-1.16
+./configure --prefix=${BOSH_INSTALL_TARGET}
+make
+make install
+popd
+
+# Install rpm package
+tar xvf ${BOSH_COMPILE_TARGET}/rpm/rpm-4.13.0.1.tar.bz2
+pushd rpm-4.13.0.1
+export LIBRARY_PATH=${nssdir}/dist/${nssdist}/lib:${BOSH_INSTALL_TARGET}/lib
+export LD_LIBRARY_PATH=${nssdir}/dist/${nssdist}/lib:${BOSH_INSTALL_TARGET}/lib
+CPPFLAGS="-I${nssdir}/dist/${nssdist}/include -I${nssdir}/dist/public/nss -I${BOSH_INSTALL_TARGET}/include" ./configure --with-external-db --without-lua --prefix=${BOSH_INSTALL_TARGET}
+make
+make install
+popd
