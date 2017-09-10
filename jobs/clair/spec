@@ -6,6 +6,7 @@ packages:
   - bzr_clair
   - git_clair
   - python_clair
+  - rpm_clair
 
 templates:
   bin/clair_ctl.erb: bin/clair_ctl
