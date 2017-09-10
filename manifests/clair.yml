@@ -74,4 +74,6 @@ releases:
   url: https://bosh.io/d/github.com/cloudfoundry/postgres-release?v=20
   sha1: 3f378bcab294e20316171d4e656636df88763664
 - name: clair
-  version: latest
+  version: 2
+  url: https://github.com/frodenas/clair-boshrelease/releases/download/v2/clair-2.tgz
+  sha1: f237588c09baa1008d4afad81c23561a4ff6fa2c
