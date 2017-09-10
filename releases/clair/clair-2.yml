@@ -1,0 +1,46 @@
+name: clair
+version: "2"
+commit_hash: 89b2268
+uncommitted_changes: false
+jobs:
+- name: clair
+  version: d16e58ec017d0aa44644e7fe903ef063f29aea99
+  fingerprint: d16e58ec017d0aa44644e7fe903ef063f29aea99
+  sha1: 5a9584fb53b67ceb9a580b861c1306750c72d332
+packages:
+- name: bzr_clair
+  version: 2417b7590108e21f6f2302465ad85acb65295bfb
+  fingerprint: 2417b7590108e21f6f2302465ad85acb65295bfb
+  sha1: ede517b68665b8dc94ca80911fae836938f6f8d3
+  dependencies:
+  - python_clair
+- name: clair
+  version: 830a14dbe3573f9d0dd0c2f7072f810d5f92288e
+  fingerprint: 830a14dbe3573f9d0dd0c2f7072f810d5f92288e
+  sha1: 7f2b198702301c653737d8b4abf742cbac8933b8
+  dependencies:
+  - golang_clair
+- name: git_clair
+  version: d7784a29ef67a3112ceedbf9cdafcf544051c5d3
+  fingerprint: d7784a29ef67a3112ceedbf9cdafcf544051c5d3
+  sha1: 41e29e8711a26655a9d84a0217f2f6d72ce84a1b
+  dependencies: []
+- name: golang_clair
+  version: 5933acee850683e39a2aae8e84c6b96fe425e352
+  fingerprint: 5933acee850683e39a2aae8e84c6b96fe425e352
+  sha1: e410ecb06fa1b21bbef1d5851e71ecafc4cf85ad
+  dependencies: []
+- name: python_clair
+  version: ccf6479fdc56387587c370210cf3a645235a6a07
+  fingerprint: ccf6479fdc56387587c370210cf3a645235a6a07
+  sha1: 0fc4a08fa393c66adafa7ec5de2755640aa6b415
+  dependencies: []
+- name: rpm_clair
+  version: b9066444e2425abec7a561f0b8774e78a2dca5b8
+  fingerprint: b9066444e2425abec7a561f0b8774e78a2dca5b8
+  sha1: 42efff66c8deaa04a91b00c9009f921083582d78
+  dependencies: []
+license:
+  version: 58eaf8bc410d19ad37bdc1f9ab906712ef9eac5e
+  fingerprint: 58eaf8bc410d19ad37bdc1f9ab906712ef9eac5e
+  sha1: 3aef1a1f0a4cf4da4596a41e48da2141bd853695
