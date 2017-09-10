@@ -1,65 +1,67 @@
 # Clair BOSH Release
 
-This is a [BOSH](http://bosh.io/) release for [Clair](https://github.com/coreos/clair) (a Container Vulnerability Analysis Service).
+This is a [BOSH](http://bosh.io/) release for [Clair](https://github.com/coreos/clair), an open source project for the [static analysis](https://en.wikipedia.org/wiki/Static_program_analysis) of vulnerabilities in application containers.
 
-## Disclaimer
+## Table of Contents
 
-This is NOT presently a production ready BOSH release. This is a work in progress. It is suitable for experimentation and may not become supported in the future.
+* [Usage](https://github.com/frodenas/clair-boshrelease#usage)
+  * [Requirements](https://github.com/frodenas/clair-boshrelease#requirements)
+  * [Clone the repository](https://github.com/frodenas/clair-boshrelease#clone-the-repository)
+  * [Basic deployment](https://github.com/frodenas/clair-boshrelease#basic-deployment)
+  * [Operations files](https://github.com/frodenas/clair-boshrelease#operations-files)
+  * [Deployment variables and the var-store](https://github.com/frodenas/clair-boshrelease#deployment-variables-and-the-var-store)
+* [Contributing](https://github.com/frodenas/clair-boshrelease#contributing)
+* [License](https://github.com/frodenas/clair-boshrelease#license)
 
 ## Usage
 
-### Upload the BOSH release
+### Requirements
 
-To use this BOSH release, first upload it to your BOSH:
+In order to use this BOSH release you will need:
+
+* [BOSH CLI v2](https://bosh.io/docs/cli-v2.html)
+* An already deployed [BOSH environment](http://bosh.io/docs/init.html)
+* A compatible [cloud-config](http://bosh.io/docs/terminology.html#cloud-config) with a `default` option for `network` and `vm_types` (you can use the example that comes from [cf-deployment](https://github.com/cloudfoundry/cf-deployment/blob/master/bosh-lite/cloud-config.yml))
+
+###  Clone the repository
+
+First, clone this repository into your workspace:
 
 ```
-bosh target BOSH_HOST
-git clone https://github.com/frodenas/clair-boshrelease.git
+git clone https://github.com/frodenas/clair-boshrelease
 cd clair-boshrelease
-bosh upload release releases/clair/clair-1.yml
+export BOSH_ENVIRONMENT=<name>
 ```
 
-### Create a BOSH deployment manifest
+### Basic deployment
 
-Now create a deployment file (using the files at the [examples](https://github.com/frodenas/clair-boshrelease/blob/master/examples/) directory as a starting point).
-
-### Deploy using the BOSH deployment manifest
-
-Using the previous created deployment manifest, now we can deploy it:
+To deploy a basic `clair` server use the following command:
 
 ```
-bosh deployment path/to/deployment.yml
-bosh -n deploy
+bosh -d clair deploy manifests/clair.yml \
+  --vars-store tmp/deployment-vars.yml
 ```
+
+### Operations files
+
+Additional [operations files](http://bosh.io/docs/cli-ops-files.html) are located at the [manifests/operators](https://github.com/frodenas/clair-boshrelease/tree/master/manifests/operators) directory. Those files includes a basic configuration, so extra ops files might be needed for additional configuration.
+
+Please review the op files before deploying them to check the requeriments, dependencies and necessary variables.
+
+| File | Description | exporter | dashboards | alerts |
+| ---- | ----------- |:--------:|:----------:|:------:|
+
+### Deployment variables and the var-store
+
+Some operators files requires additional information to provide environment-specific or sensitive configuration such as various credentials. To do this in the default configuration, we use the `--vars-store`. This flag takes the name of a `yml` file that it will read and write to. Where necessary credential values are not present, it will generate new values based on the type information stored at the different deployment files. Necessary variables that BOSH can't generate need to be supplied as well.
+See each particular op files you're using for any additional necessary variables.
+
+See also the [BOSH CLI documentation](http://bosh.io/docs/cli-int.html#value-sources) for more information about ways to supply such additional variables.
 
 ## Contributing
 
-In the spirit of [free software](http://www.fsf.org/licensing/essays/free-sw.html), **everyone** is encouraged to help improve this project.
+Refer to [CONTRIBUTING.md](https://github.com/frodenas/clair-boshrelease/blob/master/CONTRIBUTING.md).
 
-Here are some ways *you* can contribute:
+## License
 
-* by using alpha, beta, and prerelease versions
-* by reporting bugs
-* by suggesting new features
-* by writing or editing documentation
-* by writing specifications
-* by writing code (**no patch is too small**: fix typos, add comments, clean up inconsistent whitespace)
-* by refactoring code
-* by closing [issues](https://github.com/frodenas/clair-boshrelease/issues)
-* by reviewing patches
-
-### Submitting an Issue
-We use the [GitHub issue tracker](https://github.com/frodenas/clair-boshrelease/issues) to track bugs and features. Before submitting a bug report or feature request, check to make sure it hasn't already been submitted. You can indicate support for an existing issue by voting it up. When submitting a bug report, please include a
-[Gist](http://gist.github.com/) that includes a stack trace and any details that may be necessary to reproduce the bug,. Ideally, a bug report should include a pull request with failing specs.
-
-### Submitting a Pull Request
-
-1. Fork the project.
-2. Create a topic branch.
-3. Implement your feature or bug fix.
-4. Commit and push your changes.
-5. Submit a pull request.
-
-## Copyright
-
-Copyright (c) 2015 Ferran Rodenas. See [LICENSE](https://github.com/frodenas/clair-boshrelease/blob/master/LICENSE) for details.
+Apache License 2.0, see [LICENSE](https://github.com/frodenas/clair-boshrelease/blob/master/LICENSE).
